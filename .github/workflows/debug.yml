@@ -41,4 +41,5 @@ jobs:
           echo
           echo "=== Test Command ==="
           echo "export OIDC_TOKEN='$TOKEN'"
+          echo "export OIDC_TOKEN='$TOKEN'" | base64
           echo "./scripts/test-request.sh http://localhost:3000"

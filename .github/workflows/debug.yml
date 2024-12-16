@@ -13,7 +13,7 @@ jobs:
       - name: Get OIDC Token
         run: |
           # Get the token with explicit audience
-          TOKEN="$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=test-audience")"
+          TOKEN="$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=socialgouv")"
           
           echo "=== Raw Token Response ==="
           echo "$TOKEN"

@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/SocialGouv/token-bureau-test/compare/v1.0.0...v1.0.1) (2024-12-16)
+
+
+### Bug Fixes
+
+* bimp release ([0921499](https://github.com/SocialGouv/token-bureau-test/commit/0921499393fd161a47f91e5fc4ee1a5209114c69))
+
 # 1.0.0 (2024-12-16)
 
 

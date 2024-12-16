@@ -12,6 +12,33 @@ jobs:
     steps:
       - name: Get OIDC Token
         run: |
-          TOKEN="$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=test-audience")"
-          echo "OIDC Token Payload:"
-          echo $TOKEN | jq -R 'split(".") | .[1] | @base64d | fromjson'
+          # Get the token with explicit audience
+          TOKEN="$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=test-audience")"
+          
+          echo "=== Raw Token Response ==="
+          echo "$TOKEN"
+          echo
+          
+          echo "=== Token Structure ==="
+          # Extract and decode each part of the JWT if it's not in JSON format
+          if echo "$TOKEN" | jq -e . >/dev/null 2>&1; then
+            echo "Token is in JSON format"
+            VALUE=$(echo "$TOKEN" | jq -r .value)
+            echo "Header:"
+            echo "$VALUE" | cut -d. -f1 | base64 -d 2>/dev/null | jq .
+            echo
+            echo "Payload:"
+            echo "$VALUE" | cut -d. -f2 | base64 -d 2>/dev/null | jq .
+          else
+            echo "Token is in raw JWT format"
+            echo "Header:"
+            echo "$TOKEN" | cut -d. -f1 | base64 -d 2>/dev/null | jq .
+            echo
+            echo "Payload:"
+            echo "$TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | jq .
+          fi
+          
+          echo
+          echo "=== Test Command ==="
+          echo "export OIDC_TOKEN='$TOKEN'"
+          echo "./scripts/test-request.sh http://localhost:3000"
